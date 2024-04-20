@@ -1,14 +1,12 @@
 // This file imports the required modules
 const express = require("express");
 let books = require("./booksdb.js");
-let isValid = require("./auth_users.js").isValid;
-let users = require("./auth_users.js").users;
+let { isValid, user } = require("./auth_users.js");
 const public_users = express.Router();
 
 // This route handles user registration
 public_users.post("/register", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
 
   if (username && password) {
     if (!isValid(username)) {
@@ -41,7 +39,7 @@ public_users.get("/", function (req, res) {
 
 // Get book details based on ISBN
 public_users.get("/isbn/:isbn", function (req, res) {
-  const isbn = req.params.isbn;
+  const isbn = req.params;
 
   // Create a Promise
   const findBookPromise = new Promise((resolve, reject) => {
